@@ -2,11 +2,12 @@
 
 import csv
 from matplotlib import pyplot
+from matplotlib import patches
 
 station_dict = {}
 
 
-datafile = '/path/to/1166240.csv'
+datafile = '/home/underasail/Downloads/1166240.csv'
 with open(datafile, newline='') as f:
     csvreader = csv.reader(f, delimiter = ',', quotechar='"')
     
@@ -23,17 +24,19 @@ with open(datafile, newline='') as f:
     # establishes header from first line and creates readable indexes
     
     for row in csvreader:
-        if row[station] not in station_dict:
+        if not row[Tmax] or not row[Tmin] or not row[Tavg]:
+            pass
+        elif row[station] not in station_dict:
             station_dict[row[station]] = [[], [], [], []]
             station_dict[row[station]][0].append(row[date])
-            station_dict[row[station]][1].append(row[Tmax])
-            station_dict[row[station]][2].append(row[Tmin])
-            station_dict[row[station]][3].append(row[Tavg])
+            station_dict[row[station]][1].append(int(row[Tmax]))
+            station_dict[row[station]][2].append(int(row[Tmin]))
+            station_dict[row[station]][3].append(int(row[Tavg]))
         else:
             station_dict[row[station]][0].append(row[date])
-            station_dict[row[station]][1].append(row[Tmax])
-            station_dict[row[station]][2].append(row[Tmin])
-            station_dict[row[station]][3].append(row[Tavg])
+            station_dict[row[station]][1].append(int(row[Tmax]))
+            station_dict[row[station]][2].append(int(row[Tmin]))
+            station_dict[row[station]][3].append(int(row[Tavg]))
         """
         dict structure should be:
         {'station1': [[date1, date2, ...] [Tmax1, Tmax2, ...], 
@@ -42,25 +45,37 @@ with open(datafile, newline='') as f:
 
 pyplot.figure(figsize = (250, 20))
 pyplot.plot(\
-station_dict['USW00012839'][0], station_dict['USW00012839'][1], 'b-', \
-station_dict['USC00081306'][0], station_dict['USC00081306'][1], 'b-', \
-station_dict['USW00092811'][0], station_dict['USW00092811'][1], 'b-', \
-station_dict['USC00085667'][0], station_dict['USC00085667'][1], 'b-', \
-station_dict['USW00012839'][0], station_dict['USW00012839'][2], 'g-', \
-station_dict['USC00081306'][0], station_dict['USC00081306'][2], 'g-', \
-station_dict['USW00092811'][0], station_dict['USW00092811'][2], 'g-', \
-station_dict['USC00085667'][0], station_dict['USC00085667'][2], 'g-', \
-station_dict['USW00012839'][0], station_dict['USW00012839'][3], 'r-', \
-station_dict['USC00081306'][0], station_dict['USC00081306'][3], 'r-', \
-station_dict['USW00092811'][0], station_dict['USW00092811'][3], 'r-', \
-station_dict['USC00085667'][0], station_dict['USC00085667'][3], 'r-' \
-)
-pyplot.title('Miami Temperature from August 2015 to December 2017\n', \
-size = 'x-large', weight = 'bold')
-pyplot.ylabel('Temperature (Fahrenheit)', style = 'italic')
-pyplot.xlabel('Date', style = 'italic')
-pyplot.xticks(rotation = 'vertical')
+station_dict['USW00012839'][0], station_dict['USW00012839'][1], 'r-', \
+station_dict['USW00012839'][0], station_dict['USW00012839'][2], 'b-', \
+station_dict['USW00012839'][0], station_dict['USW00012839'][3], 'g-', \
+linewidth = 5)
+# figure sizing and line plotting
+pyplot.title('Miami Air Temperature\n', \
+fontsize = '100', weight = 'bold')
+pyplot.ylabel('\nTemperature (Fahrenheit)\n', style = 'italic', fontsize = 60)
+pyplot.xlabel('\nDate (YYYY-MM-DD)\n', style = 'italic', fontsize = 60)
+pyplot.xticks(rotation = 'vertical', fontsize = 15)
+pyplot.yticks(fontsize = 20)
+# labeling
+pyplot.margins(x = 0, y = 0)
+pyplot.axvspan('2015-08-01', '2015-12-31', color='yellow', alpha=0.25)
+pyplot.axvspan('2016-01-01', '2016-12-31', color='cyan', alpha=0.25)
+pyplot.axvspan('2017-01-01', '2017-12-31', color='#FF99FF', alpha=0.25)
+ymin, ymax = pyplot.ylim()
+pyplot.axhspan(ymin, 50, color='#FF9966', alpha=0.25)
+pyplot.axhspan(ymin, 45, color='#FF6633', alpha=0.5)
+# margins and highlighting of vertical and horizontal areas
+yellow_patch = patches.Patch(color='yellow', \
+label='Aug 01, 2015 - Dec 31, 2015')
+cyan_patch = patches.Patch(color='cyan', \
+label='Jan 01, 2016 - Dec 31, 2016')
+pink_patch = patches.Patch(color='#FF99FF', \
+label='Jan 01, 2017 - Dec 31, 2017')
+legend_1 = pyplot.legend(handles = [yellow_patch, cyan_patch, pink_patch], \
+fontsize = 50, loc = 'center left')
+ax = pyplot.gca().add_artist(legend_1)
+pyplot.legend(['Maximum Daily Temperature', 'Minimum Daily Temperature', \
+'Average Daily Temperature'], fontsize = 50, loc = 'lower left')
+# multi-legend setup
 pyplot.show()
-
-
 
