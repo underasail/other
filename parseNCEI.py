@@ -6,7 +6,7 @@ from matplotlib import pyplot
 station_dict = {}
 
 
-datafile = '/home/underasail/Downloads/1166240.csv'
+datafile = '/path/to/1166240.csv'
 with open(datafile, newline='') as f:
     csvreader = csv.reader(f, delimiter = ',', quotechar='"')
     
