@@ -7,7 +7,7 @@ from matplotlib import patches
 station_dict = {}
 
 
-datafile = '/home/underasail/Downloads/1166240.csv'
+datafile = input('Path to NCEI csv File: ')
 with open(datafile, newline='') as f:
     csvreader = csv.reader(f, delimiter = ',', quotechar='"')
     
