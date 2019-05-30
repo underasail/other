@@ -35,8 +35,8 @@ ax = plt.subplot(1, 1, 1)
 plt.scatter(dists, areas, color = regions, zorder = 2)
 plt.plot(dists, b + m * np.array(dists), '-', color = 'black', zorder = 1)
 
-plt.xlim(0, 40)
-plt.ylim(0, 30)
+plt.xlim(0, 100)
+plt.ylim(0, 70)
 
 plt.xlabel('Distance from Easternmost Point (mi x $10^{2}$)', x = 0.5, fontsize = 12)
 plt.ylabel('Total State Area (mi$^2$ x $10^{4}$)', x = 0.5, fontsize = 12)
@@ -44,7 +44,7 @@ plt.title('Things are bigger out west (and Texas)\n', fontweight='bold')
 
 tx_ind = names.index("Texas")
 ax.annotate("Texas", xy=(dists[tx_ind] - 0.4, areas[tx_ind]), 
-            xytext=(dists[tx_ind] - 6, areas[tx_ind] - 4), 
+            xytext=(dists[tx_ind] - 8, areas[tx_ind] - 7), 
             arrowprops=dict(arrowstyle="->", connectionstyle = "angle3"))
 
 ri_ind = names.index("Rhode Island")
@@ -54,29 +54,28 @@ ax.annotate("Rhode Island", xy=(dists[ri_ind] + 0.4, areas[ri_ind]),
 
 me_ind = names.index("Maine")
 ax.annotate("Maine", xy=(dists[me_ind] + 0.4, areas[me_ind]), 
-            xytext=(dists[me_ind] + 1, areas[me_ind] + 4), 
+            xytext=(dists[me_ind] + 1, areas[me_ind] + 8), 
             arrowprops=dict(arrowstyle="->", connectionstyle = "angle3"))
 
 wa_ind = names.index("Washington")
 ax.annotate("Washington", xy=(dists[wa_ind] - 0.4, areas[wa_ind]), 
-            xytext=(dists[wa_ind] - 10, areas[wa_ind] - 3), 
+            xytext=(dists[wa_ind] + 10, areas[wa_ind] - 3), 
             arrowprops=dict(arrowstyle="->", connectionstyle = "angle3"))
 
 ca_ind = names.index("California")
 ax.annotate("California", xy=(dists[ca_ind] - 0.4, areas[ca_ind]), 
-            xytext=(dists[ca_ind] - 8, areas[ca_ind] + 3), 
+            xytext=(dists[ca_ind] + 7, areas[ca_ind] + 8), 
             arrowprops=dict(arrowstyle="->", connectionstyle = "angle3"))
 
-#ax.annotate('Northeast', xy=(1, 12), xytext=(7, 12),
-#            arrowprops={'arrowstyle': '<|-|>'}, color = 'navy')
-#ax.annotate('Southwest', xy=(8, 15), xytext=(17, 15),
-#            arrowprops={'arrowstyle': '<|-|>'}, color = 'purple')
-#ax.annotate('Midwest', xy=(12, 18), xytext=(24, 18),
-#            arrowprops={'arrowstyle': '<|-|>'}, color = 'green')
-#ax.annotate('Southwest', xy=(22, 21), xytext=(32, 21),
-#            arrowprops={'arrowstyle': '<|-|>'}, color = 'firebrick')
-#ax.annotate('West', xy=(26, 24), xytext=(33, 24),
-#            arrowprops={'arrowstyle': '<|-|>'}, color = 'gold')
+ak_ind = names.index("Alaska")
+ax.annotate("Alaska", xy=(dists[ak_ind] - 0.4, areas[ak_ind]), 
+            xytext=(dists[ak_ind] - 14, areas[ak_ind] - 10), 
+            arrowprops=dict(arrowstyle="->", connectionstyle = "angle3"))
+
+hi_ind = names.index("Hawaii")
+ax.annotate("Hawaii", xy=(dists[hi_ind] - 0.4, areas[hi_ind]), 
+            xytext=(dists[hi_ind] - 13, areas[hi_ind] + 8), 
+            arrowprops=dict(arrowstyle="->", connectionstyle = "angle3"))
 
 NE = mpatches.Patch(color='navy', label='Northeast')
 SE = mpatches.Patch(color='purple', label='Southeast')
@@ -89,9 +88,11 @@ We = mpatches.Patch(color='gold', label='West')
 #ax.add_artist(left_legend)
 left_legend = plt.legend(handles = [NE, SE, MW, SW, We], loc = 'upper left')
 
+#ax.set_xscale('symlog')
+#ax.set_yscale('symlog')
 ax.spines['right'].set_visible(False)
 ax.spines['top'].set_visible(False)
 ax.yaxis.set_ticks_position('none')  # Keeps vertical ticks hidden
 ax.xaxis.set_ticks_position('none')  # Keeps horizontal ticks hidden on top
-plt.savefig('distVarea.png', 
+plt.savefig('distVarea_ak_hi.png', 
             bbox_inches = 'tight', format = 'png', dpi = 600)
