@@ -33,8 +33,8 @@ url returned will be in form: http://localhost:8282/?state=&code=6aa803f4673bf84
 Info from: https://stackoverflow.com/questions/52880434/problem-with-access-token-in-strava-api-v3-get-all-athlete-activities/52888659
 """
 
-client_secret='8d0e7c8f60566ead8e39dfdba5ea5de2fa1e53fa'
-code = '87a738fd6ff2f5460b60258be41525b688e22d38'
+client_secret=''
+code = ''
 
 access_token = client.exchange_code_for_token(client_id = client_id,
                                               client_secret = client_secret,
@@ -297,7 +297,7 @@ plt.show()
 #center = [25.861074000000002, -80.289717]
 #
 #gmap = gmplot.GoogleMapPlotter(center[0], center[1], 10)
-#gmap.apikey = 'AIzaSyCkdlRImErGdlbI3KpJmqrP_yF2cIKRIXw'
+#gmap.apikey = ''
 #
 #for activity in activities:
 #    lat = []
@@ -340,7 +340,7 @@ m = Basemap(projection = 'merc', llcrnrlat = llcrnrlat, urcrnrlat = urcrnrlat,
             epsg = 2236)
 
 gmap_highres = gmplot.GoogleMapPlotter(center[0], center[1], 10)
-gmap_highres.apikey = 'AIzaSyCkdlRImErGdlbI3KpJmqrP_yF2cIKRIXw'
+gmap_highres.apikey = ''
 
 streams_latlng_woBadGPS = {}
 with open('streams_latlng_woBadGPS_dict.pkl', 'rb') as f:
@@ -566,7 +566,7 @@ m = Basemap(projection = 'merc', llcrnrlat = llcrnrlat, urcrnrlat = urcrnrlat,
             epsg = 2846)
 
 gmap_highres = gmplot.GoogleMapPlotter(center[0], center[1], 10)
-gmap_highres.apikey = 'AIzaSyCkdlRImErGdlbI3KpJmqrP_yF2cIKRIXw'
+gmap_highres.apikey = ''
 
 i = 0
 for stream in streams_latlng_woBadGPS:
@@ -661,7 +661,7 @@ m = Basemap(projection = 'merc', llcrnrlat = llcrnrlat, urcrnrlat = urcrnrlat,
             epsg = 2846)
 
 gmap_highres = gmplot.GoogleMapPlotter(center[0], center[1], 10)
-gmap_highres.apikey = 'AIzaSyCkdlRImErGdlbI3KpJmqrP_yF2cIKRIXw'
+gmap_highres.apikey = ''
 
 i = 0
 for stream in streams_latlng_woBadGPS:
