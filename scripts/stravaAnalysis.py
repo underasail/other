@@ -643,6 +643,101 @@ print("Houston Heatmap Done")
 
 #%%
 
+fig = plt.figure(facecolor = '0.05')
+ax = plt.Axes(fig, [0., 0., 1., 1.], )
+ax.set_aspect('equal')
+ax.set_axis_off()
+fig.add_axes(ax)
+
+llcrnrlat = 37.662741
+llcrnrlon = -122.607818
+urcrnrlon = -122.366769
+urcrnrlat = 37.922877
+center = [(llcrnrlat - urcrnrlat)/2 + llcrnrlat, 
+          (llcrnrlon - urcrnrlon)/2 + llcrnrlon]
+
+m = Basemap(projection = 'merc', llcrnrlat = llcrnrlat, urcrnrlat = urcrnrlat, 
+            llcrnrlon = llcrnrlon, urcrnrlon = urcrnrlon, lat_ts = center[0], 
+            epsg = 2846)
+
+gmap_highres = gmplot.GoogleMapPlotter(center[0], center[1], 10)
+gmap_highres.apikey = 'AIzaSyCkdlRImErGdlbI3KpJmqrP_yF2cIKRIXw'
+
+i = 0
+for stream in streams_latlng_woBadGPS:
+#    i += 1
+    lat = []
+    lon = []
+    try:
+        latlngs = streams_latlng_woBadGPS[stream][0]
+        for cords in latlngs:
+            latitude = cords[0]
+            longitude = cords[1]
+            if urcrnrlat > latitude > llcrnrlat and \
+            urcrnrlon > longitude > llcrnrlon:
+                lat.append(cords[0])
+                lon.append(cords[1])
+        if len(lon) > 1:
+            lon, lat = m(lon, lat)
+            m.plot(lon, lat, color = 'blue', lw = 0.075, alpha = 0.2, 
+                   marker = None)
+        else:
+            pass
+        gmap_highres.plot(lat, lon, 'black', edge_width = 1.0)
+    except KeyError:  # if only time data
+        pass
+    except TypeError:  # if no gps data but gps dict available
+        pass
+#    print(i)
+
+m.arcgisimage(service = 'Canvas/World_Dark_Gray_Base', xpixels = 3600, 
+              ypixels = None, dpi = 3600, verbose = False)
+
+filename = 'stravaAnalysis_SF'
+gmap_highres.draw(filename + '_highres.html')
+
+plt.gca().set_axis_off()
+plt.subplots_adjust(top = 1, bottom = 0, right = 1, left = 0, hspace = 0, 
+                    wspace = 0)
+plt.margins(0, 0)
+plt.gca().xaxis.set_major_locator(ticker.NullLocator())
+plt.gca().yaxis.set_major_locator(ticker.NullLocator())
+
+plt.savefig(filename + '_highres.png', format = 'png', pad_inches = 0, 
+            dpi = 3600, facecolor = fig.get_facecolor(), 
+            bbox_inches = 'tight')
+plt.cla()
+plt.clf()
+plt.close("all")
+
+print("SF Plot Done")
+
+
+Image.MAX_IMAGE_PIXELS = None
+
+im = Image.open(filename + '_highres.png')
+newimdata = []
+for pixel in im.getdata():
+    value = pixel[2]
+    newpixel = ()
+    if pixel[2] > pixel[1] + 10:
+        for entry in cm.plasma(value):
+            nv = int(entry * 255)
+            newpixel = newpixel + (nv,)
+    elif pixel[0] < 50:
+        newpixel = (16, 25, 41, 255)  # steelblueish
+    else:
+        newpixel = (0, 0, 0, 255)
+    newimdata.append(newpixel)
+
+newim = Image.new(im.mode, im.size)
+newim.putdata(newimdata)
+newim.save(filename + '_heatmap_highres.png')
+
+print("SF Heatmap Done")
+
+#%%
+
 #################
 # Download GPXs #
 #################
